@@ -1,0 +1,1 @@
+export { UPDATE_AUTH, updateAuth } from './authAction'
