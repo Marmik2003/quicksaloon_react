@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   TextField,
   Button,
@@ -20,7 +20,6 @@ function ServiceForm(props) {
   
   const { open, handleClose, serviceState } = props
 
-  const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
 
   return (
     <Dialog
@@ -28,7 +27,6 @@ function ServiceForm(props) {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      {!isSubmitionCompleted && (
         <React.Fragment>
           <DialogTitle id="form-dialog-title">Service Form</DialogTitle>
           <DialogContent>
@@ -37,7 +35,6 @@ function ServiceForm(props) {
               initialValues={serviceState}
               onSubmit={(values) => {
                 console.log(values);
-                setSubmitionCompleted(true)
                 handleClose();
               }}
               validationSchema={Yup.object().shape({
@@ -99,20 +96,7 @@ function ServiceForm(props) {
             </Formik>
           </DialogContent>
         </React.Fragment>
-      )}
-      {isSubmitionCompleted && (
-        <React.Fragment>
-          <DialogTitle id="form-dialog-title">Thanks!</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Thanks</DialogContentText>
-            <DialogActions>
-              <Button type="button" className="outline" onClick={handleClose}>
-                Back to app
-              </Button>
-            </DialogActions>
-          </DialogContent>
-        </React.Fragment>
-      )}
+      )
     </Dialog>
   );
 }

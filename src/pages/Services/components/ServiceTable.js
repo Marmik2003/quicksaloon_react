@@ -1,4 +1,5 @@
 import React from "react";
+import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { filter } from "lodash";
 import { sentenceCase } from "change-case";
@@ -13,6 +14,10 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from "@mui/material";
 
 import Label from "../../../components/Label";
@@ -63,6 +68,8 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
   const [orderBy, setOrderBy] = useState("name");
   const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -115,6 +122,30 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
     setDialogOpen(true);
   };
 
+  const popImageDialog = (imageUrl) => {
+    if (imageUrl) {
+      setImageUrl(imageUrl);
+      setImageDialogOpen(true);
+    }
+  };
+
+  const ImageDialog = () => {
+    return (
+      <Dialog
+        maxWidth="md"
+        open={imageDialogOpen}
+        onClose={() => setImageDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="image-dialog-title">Service Image</DialogTitle>
+        <DialogContent>
+          <img src={imageUrl} alt="Missing Service" className="img-fluid" />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - serviceList.length) : 0;
 
@@ -150,7 +181,7 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
               {filteredServices
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
-                  const { id, name, status } = row;
+                  const { id, name, image, status } = row;
                   const isItemSelected = selected.indexOf(name) !== -1;
 
                   return (
@@ -173,10 +204,29 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
                           direction="row"
                           alignItems="center"
                           spacing={2}
-                          sx={{ minWidth: 180 }}
                         >
                           <Typography variant="subtitle2" noWrap>
                             {name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell component="th" scope="row" padding="normal">
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          spacing={2}
+                        >
+                          <Typography variant="subtitle2" noWrap>
+                            {image.trim() && 
+                              <Button
+                                variant="contained"
+                                onClick={() => popImageDialog(image)}
+                                startIcon={<Icon icon='akar-icons:eye'></Icon>}
+                              >
+                                View
+                              </Button>
+                            }
+                            {!image.trim() && <span>No Image</span>}
                           </Typography>
                         </Stack>
                       </TableCell>
@@ -228,6 +278,7 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <ImageDialog />
     </Card>
   );
 }

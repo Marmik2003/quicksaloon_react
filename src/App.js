@@ -4,6 +4,7 @@ import Router from './routes';
 // redux
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 import reducers from './reducers'
 
@@ -17,10 +18,11 @@ import { BaseOptionChartStyle } from './components/charts/BaseOptionChart';
 
 // ----------------------------------------------------------------------
 
-const createStoreWithMiddleware = applyMiddleware()( createStore );
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 export default function App() {
-  const store = createStoreWithMiddleware(reducers)
+  
+  const store = createStoreWithMiddleware(reducers);
 
   return (
     <Provider store={store}>

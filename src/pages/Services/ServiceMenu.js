@@ -24,6 +24,7 @@ const ServiceLIST = [...Array(5)].map((_, index) => ({
     "colouring",
     "nail treatments",
   ]),
+  image: sample(["https://picsum.photos/300/300", ""]),
   status: sample(["active", "inactive"]),
 }));
 
@@ -31,6 +32,7 @@ const ServiceLIST = [...Array(5)].map((_, index) => ({
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
+  { id: "image", label: "Image", alignRight: false },
   { id: "status", label: "Status", alignRight: false },
   { id: "" },
 ];
@@ -40,7 +42,7 @@ const TABLE_HEAD = [
 const newServiceState = {
   id: null,
   name: "",
-  is_active: false,
+  status: false,
 };
 
 export default function Service() {

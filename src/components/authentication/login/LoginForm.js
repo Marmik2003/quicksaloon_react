@@ -24,7 +24,11 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    email: Yup.number()
+              .typeError('Phone number must be integer')
+              .min(4000000000, 'Please enter valid Phone number.')
+              .max(9999999998, 'Phone number must be 10 digit long')
+              .required('Phone number is required'),
     password: Yup.string().required('Password is required')
   });
 
@@ -36,7 +40,7 @@ export default function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      navigate('/admin/dashboard', { replace: true });
     }
   });
 
@@ -52,9 +56,9 @@ export default function LoginForm() {
         <Stack spacing={3}>
           <TextField
             fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
+            autoComplete="off"
+            type="text"
+            label="Phone number"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
