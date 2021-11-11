@@ -4,6 +4,7 @@ import { useState } from "react";
 import { filter } from "lodash";
 import { sentenceCase } from "change-case";
 import {
+  IconButton,
   Card,
   Table,
   Stack,
@@ -19,6 +20,7 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
+import CloseIcon from "@material-ui/icons/Close";
 
 import Label from "../../../components/Label";
 import Scrollbar from "../../../components/Scrollbar";
@@ -138,7 +140,12 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="image-dialog-title">Service Image</DialogTitle>
+        <DialogTitle id="image-dialog-title" >
+          Service Image
+          <IconButton onClick={() => setImageDialogOpen(false)} style={{cursor:'pointer', float:'right',}}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <img src={imageUrl} alt="Missing Service" className="img-fluid" />
         </DialogContent>
@@ -181,7 +188,7 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
               {filteredServices
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
-                  const { id, name, image, status } = row;
+                  const { id, name, imageUrl, status } = row;
                   const isItemSelected = selected.indexOf(name) !== -1;
 
                   return (
@@ -217,16 +224,16 @@ function ServiceTable({ serviceList, tableHead, setServiceState, setDialogOpen }
                           spacing={2}
                         >
                           <Typography variant="subtitle2" noWrap>
-                            {image.trim() && 
+                            {imageUrl.trim() && 
                               <Button
                                 variant="contained"
-                                onClick={() => popImageDialog(image)}
+                                onClick={() => popImageDialog(imageUrl)}
                                 startIcon={<Icon icon='akar-icons:eye'></Icon>}
                               >
                                 View
                               </Button>
                             }
-                            {!image.trim() && <span>No Image</span>}
+                            {!imageUrl.trim() && <span>No Image</span>}
                           </Typography>
                         </Stack>
                       </TableCell>

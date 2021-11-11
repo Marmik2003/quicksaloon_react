@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Box,
   TextField,
   Button,
   Dialog,
@@ -64,6 +65,30 @@ function ServiceForm(props) {
                       helperText={errors.name && touched.name && errors.name}
                       margin="normal"
                     />
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+                      {values.imageUrl && 
+                        <Box component="img"
+                          sx={{
+                            height: 300,
+                            width: 300,
+                            maxHeight: { xs: 400, md: 500 },
+                            maxWidth: { xs: 400, md: 500 },
+                          }}
+                          alt="No service Image"
+                          src={values.imageUrl}
+                        />
+                      }
+                    </Stack>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+                      <Button
+                        variant="contained"
+                        component="label"
+                      >
+                        Upload Image
+                        <input
+                          type="file" hidden />
+                      </Button>
+                    </Stack>
                     <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
                       <FormControlLabel
                         control={

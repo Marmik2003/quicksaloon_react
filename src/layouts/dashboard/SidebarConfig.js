@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import pieChart2Fill from '@iconify/icons-eva/pie-chart-2-fill';
 
 // ----------------------------------------------------------------------
@@ -15,6 +16,11 @@ const sidebarConfig = [
     title: 'services',
     path: '/admin/services',
     icon: getIcon('vaadin:cogs')
+  },
+  {
+    title: 'create shop',
+    path: '/admin/create-shop',
+    icon: <AddBusinessIcon />
   }
 ];
 
