@@ -7,7 +7,14 @@ import { Stack, Button, Container, Typography, Card } from "@mui/material";
 import Page from "../../components/Page";
 import ShopForm from './components/ShopForm';
 
-const CreateShop = () => {
+// initial form values
+import formInitialValues from './components/FormModel/formInitialValues'
+
+import { useParams } from 'react-router-dom';
+
+const CreateShop = ({defaultValues=formInitialValues}) => {
+  const { id } = useParams();
+  console.log('CreateShop.js: id=', id)
   return (
     <Page title="Create Shop | Quicksaloon">
       <Container>
@@ -22,7 +29,7 @@ const CreateShop = () => {
           </Typography>
         </Stack>
         <Card>
-          <ShopForm />
+          <ShopForm formValues={defaultValues} />
         </Card>
       </Container>
     </Page>

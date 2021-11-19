@@ -16,12 +16,15 @@ const {
 } = shopFormModel;
 
 const validationSchema = [
+  // Shop Details
   Yup.object().shape({
     [shopName.name]: Yup.string()
       .required(shopName.requiredErrorMsg),
     [subscription.name]: Yup.string()
       .required(subscription.requiredErrorMsg),
   }),
+
+  // Main Branch Details
   Yup.object().shape({
     [branchName.name]: Yup.string()
       .required(branchName.requiredErrorMsg),
@@ -30,6 +33,8 @@ const validationSchema = [
     [latitude.name]: Yup.number(),
     [longitude.name]: Yup.number(),
   }),
+
+  // ShopAdmin Details
   Yup.object().shape({
     [userPhone.name]: Yup.string()
       .required(userPhone.requiredErrorMsg),

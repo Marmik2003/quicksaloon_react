@@ -15,7 +15,6 @@ import { Formik, Form } from 'formik';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-import formInitialValues from './FormModel/formInitialValues';
 import shopFormModel from './FormModel/shopFormModel';
 import validationSchema from './FormModel/validationSchema';
 
@@ -34,12 +33,12 @@ const steps = [
 ]
 
 // render step content
-const _renderStepContent = ({ activeStep }) => {
+const _renderStepContent = ({ activeStep, setFieldValue, formValues }) => {
   switch (activeStep) {
     case 0:
       return <ShopDetails formField={formField} />
     case 1:
-      return <BranchDetails formField={formField} />
+      return <BranchDetails formField={formField} setFieldValue={setFieldValue} formInitialValues={formValues} />
     case 2:
       return <AdminDetails formField={formField} />
     case 3:
@@ -49,7 +48,7 @@ const _renderStepContent = ({ activeStep }) => {
   }
 }
 
-const ShopForm = () => {
+const ShopForm = ({ formValues }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,8 +67,9 @@ const ShopForm = () => {
   }
 
   async function _submitForm(values, actions) {
+    setIsLoading(true);
     await _sleep(1000);
-    alert(JSON.stringify(values, null, 2));
+    setIsLoading(false);
     actions.setSubmitting(false);
 
     setActiveStep(activeStep + 1);
@@ -89,7 +89,7 @@ const ShopForm = () => {
     <Container>
       <Paper>
         <Box sx={{ width: '100%' }} my={2}>
-          <Stepper activeStep={activeStep}>
+          <Stepper activeStep={activeStep} style={{overflowX: 'auto',  scrollbarWidth: 'none', WebkitScrollSnapType: 'none'}}>
             {steps.map(label => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -122,13 +122,13 @@ const ShopForm = () => {
               </Box>
             </React.Fragment>) : (
             <Formik
-              initialValues={formInitialValues}
+              initialValues={formValues}
               validationSchema={currentValidationSchema}
               onSubmit={_handleSubmit}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, setFieldValue }) => (
                 <Form id={formId}>
-                  {_renderStepContent({ activeStep })}
+                  {_renderStepContent({ activeStep, setFieldValue, formValues })}
                   <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                     <Button
                       color="inherit"
@@ -139,8 +139,11 @@ const ShopForm = () => {
                       Back
                     </Button>
                     <Box sx={{ flex: '1 1 auto' }} />
-                    <Button type='submit'>
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    <Button type='submit' disabled={isLoading}>
+                      {!isLoading &&
+                        (activeStep === steps.length - 1 ? 'Submit' : 'Next')}
+                      {isLoading && 
+                        <CircularProgress size={24} />}
                     </Button>
                   </Box>
                 </Form>
